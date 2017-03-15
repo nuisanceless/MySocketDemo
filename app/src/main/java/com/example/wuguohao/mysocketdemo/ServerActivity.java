@@ -42,7 +42,7 @@ public class ServerActivity extends AppCompatActivity
 
     private int mPort;
     private MySocketServer mSocketServer = null;
-    private ArrayList<String> mMsgDatas = new ArrayList<>();
+    private ArrayList<MessageBean> mMsgDatas = new ArrayList<>();
     private MsgListAdapter mListAdapter;
 
     @Override
@@ -89,7 +89,7 @@ public class ServerActivity extends AppCompatActivity
                     return;
                 }
                 mSocketServer.sendMessage(msgStr);
-                mMsgDatas.add("服务端：" + msgStr);
+                mMsgDatas.add(new MessageBean(msgStr, MessageBean.SEND_MSG_TYPE));
                 mListAdapter.notifyDataSetChanged();
             }
         });
@@ -105,7 +105,7 @@ public class ServerActivity extends AppCompatActivity
                         mClientIpTv.setText(msg.obj.toString());
                         break;
                     case 12:
-                        mMsgDatas.add("客户端：" + msg.obj.toString());
+                        mMsgDatas.add(new MessageBean(msg.obj.toString(), MessageBean.RECEIVE_MSG_TYPE));
                         mListAdapter.notifyDataSetChanged();
                         break;
                     default:

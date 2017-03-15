@@ -2,6 +2,7 @@ package com.example.wuguohao.mysocketdemo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,9 @@ public class MsgListAdapter extends BaseAdapter
 {
     Context context;
     LayoutInflater inflater;
-    ArrayList<String> mMsgDatas = new ArrayList<>();
+    ArrayList<MessageBean> mMsgDatas = new ArrayList<>();
 
-    public MsgListAdapter(Context context, ArrayList<String> datas)
+    public MsgListAdapter(Context context, ArrayList<MessageBean> datas)
     {
         this.context = context;
         this.mMsgDatas = datas;
@@ -58,8 +59,14 @@ public class MsgListAdapter extends BaseAdapter
             holder = (MsgListAdapter.ViewHolder) view.getTag();
         }
 
-        String msg = mMsgDatas.get(i);
-        holder.textView.setText(msg);
+        MessageBean mb = mMsgDatas.get(i);
+
+        holder.textView.setText(mb.getMsg());
+        if (mb.getSenderType() == MessageBean.SEND_MSG_TYPE) {
+            holder.textView.setGravity(Gravity.RIGHT);
+        } else if (mb.getSenderType() == MessageBean.RECEIVE_MSG_TYPE) {
+            holder.textView.setGravity(Gravity.LEFT);
+        }
         return view;
     }
 

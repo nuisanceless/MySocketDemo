@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +36,7 @@ public class ClientActivity extends AppCompatActivity
     @BindView(R.id.msg_layout) View mMsgLayout;
 
     MySocketClient mSocketClient;
-    ArrayList<String> mMsgDatas = new ArrayList<>();
+    ArrayList<MessageBean> mMsgDatas = new ArrayList<>();
     MsgListAdapter mListAdapter = null;
 
     @Override
@@ -82,7 +83,7 @@ public class ClientActivity extends AppCompatActivity
                     return;
                 }
                 mSocketClient.sendMessage(msg);
-                mMsgDatas.add("客户端：" + msg);
+                mMsgDatas.add(new MessageBean(msg, MessageBean.SEND_MSG_TYPE));
                 mListAdapter.notifyDataSetChanged();
             }
         });
@@ -94,7 +95,7 @@ public class ClientActivity extends AppCompatActivity
                 switch (msg.what)
                 {
                     case 13:
-                        mMsgDatas.add("服务端：" + msg.obj.toString());
+                        mMsgDatas.add(new MessageBean(msg.obj.toString(), MessageBean.RECEIVE_MSG_TYPE));
                         mListAdapter.notifyDataSetChanged();
                         break;
                     case 14:
