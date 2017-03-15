@@ -1,0 +1,2 @@
+通过socket实现在两台android设备之间
+发送文字信息的简单demo。
