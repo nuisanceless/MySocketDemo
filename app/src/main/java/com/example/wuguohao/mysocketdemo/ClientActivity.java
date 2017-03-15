@@ -8,8 +8,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by wuguohao on 17/3/14.
@@ -17,38 +24,34 @@ import android.widget.Toast;
 
 public class ClientActivity extends AppCompatActivity
 {
-    EditText mServerIpEt;
-    EditText mServerPortEt;
-    Button mConnectBtn;
-    TextView mContentPanelTv;
-    EditText mInputBoxEt;
-    Button mSendMsgBtn;
+    @BindView(R.id.server_ip) EditText mServerIpEt;
+    @BindView(R.id.server_port) EditText mServerPortEt;
+    @BindView(R.id.connect) Button mConnectBtn;
+    @BindView(R.id.content_panel_lv) ListView mContentPanelLv;
+    @BindView(R.id.input_box_et) EditText mInputBoxEt;
+    @BindView(R.id.send_msg_btn) ImageButton mSendMsgBtn;
 
-    View mSetLayout;
-    View mMsgLayout;
+    @BindView(R.id.set_layout) View mSetLayout;
+    @BindView(R.id.msg_layout) View mMsgLayout;
 
     MySocketClient mSocketClient;
+    ArrayList<String> mMsgDatas = new ArrayList<>();
+    MsgListAdapter mListAdapter = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
+        ButterKnife.bind(this);
 
         initView();
     }
 
     void initView()
     {
-        mServerIpEt = (EditText) findViewById(R.id.server_ip);
-        mServerPortEt = (EditText) findViewById(R.id.server_port);
-        mConnectBtn = (Button) findViewById(R.id.connect);
-        mContentPanelTv = (TextView) findViewById(R.id.content_panel_tv);
-        mInputBoxEt = (EditText) findViewById(R.id.input_box_et);
-        mSendMsgBtn = (Button) findViewById(R.id.send_msg_btn);
-        mSetLayout = findViewById(R.id.set_layout);
-        mMsgLayout = findViewById(R.id.msg_layout);
-
         mSocketClient = new MySocketClient();
+        mListAdapter = new MsgListAdapter(this, mMsgDatas);
+        mContentPanelLv.setAdapter(mListAdapter);
 
         mConnectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +82,8 @@ public class ClientActivity extends AppCompatActivity
                     return;
                 }
                 mSocketClient.sendMessage(msg);
+                mMsgDatas.add("客户端：" + msg);
+                mListAdapter.notifyDataSetChanged();
             }
         });
 
@@ -89,7 +94,8 @@ public class ClientActivity extends AppCompatActivity
                 switch (msg.what)
                 {
                     case 13:
-                        mContentPanelTv.setText ( msg.obj.toString ());
+                        mMsgDatas.add("服务端：" + msg.obj.toString());
+                        mListAdapter.notifyDataSetChanged();
                         break;
                     case 14:
                         mSetLayout.setVisibility(View.INVISIBLE);

@@ -2,8 +2,6 @@ package com.example.wuguohao.mysocketdemo;
 
 import android.app.Activity;
 import android.content.Context;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,12 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +35,7 @@ public class ServerActivity extends AppCompatActivity
     @BindView(R.id.confirm) Button mConfirmBtn;
     @BindView(R.id.content_panel_lv) ListView mContentPanelLv;
     @BindView(R.id.input_box_et) EditText mInputBoxEt;
-    @BindView(R.id.send_message_btn) Button mSendMsgBtn;
+    @BindView(R.id.send_message_btn) ImageButton mSendMsgBtn;
 
     @BindView(R.id.set_layout) View mSetLayout;
     @BindView(R.id.msg_layout) View mMsgLayout;
@@ -47,7 +43,7 @@ public class ServerActivity extends AppCompatActivity
     private int mPort;
     private MySocketServer mSocketServer = null;
     private ArrayList<String> mMsgDatas = new ArrayList<>();
-    private ListAdapter mListAdapter;
+    private MsgListAdapter mListAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,8 +57,7 @@ public class ServerActivity extends AppCompatActivity
     void initView ()
     {
         mServerIpTv.setText(Utils.getWifiIp(this));
-        mContentPanelLv.setDivider(null);
-        mListAdapter = new ListAdapter(this);
+        mListAdapter = new MsgListAdapter(this, mMsgDatas);
         mContentPanelLv.setAdapter(mListAdapter);
 
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
@@ -120,58 +115,5 @@ public class ServerActivity extends AppCompatActivity
             }
         };
     }
-
-    class ListAdapter extends BaseAdapter
-    {
-        Context context;
-        LayoutInflater inflater;
-        public ListAdapter (Context context)
-        {
-            this.context = context;
-            inflater = ((Activity)context).getLayoutInflater();
-        }
-
-        @Override
-        public int getCount() {
-            return mMsgDatas != null ? mMsgDatas.size() : 0;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return mMsgDatas != null ? mMsgDatas.get(i) : null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            ViewHolder holder = null;
-            if (view == null)
-            {
-                holder = new ViewHolder();
-                view = inflater.inflate(R.layout.item_msg, null);
-
-                holder.textView = (TextView) view.findViewById(R.id.msg_item);
-                view.setTag(holder);
-            }
-            else
-            {
-                holder = (ViewHolder) view.getTag();
-            }
-
-            String msg = mMsgDatas.get(i);
-            holder.textView.setText(msg);
-            return view;
-        }
-
-        class ViewHolder {
-            TextView textView;
-        }
-    }
-
-
 
 }

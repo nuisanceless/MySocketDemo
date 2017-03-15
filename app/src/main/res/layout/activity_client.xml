@@ -32,33 +32,39 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/msg_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/content_panel_tv"
+        <ListView
+            android:id="@+id/content_panel_lv"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="match_parent"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5dp"
+            android:layout_above="@+id/input_box_et"/>
 
         <EditText
             android:id="@+id/input_box_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="输入你想发送的内容。。。"/>
+            android:hint="输入你想发送的内容。。。"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/send_msg_btn"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/send_msg_btn"
-            android:layout_width="match_parent"
+            android:src="@android:drawable/ic_menu_send"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="发送"/>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
 
