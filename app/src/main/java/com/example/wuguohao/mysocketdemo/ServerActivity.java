@@ -59,6 +59,7 @@ public class ServerActivity extends AppCompatActivity
         mServerIpTv.setText(Utils.getWifiIp(this));
         mListAdapter = new MsgListAdapter(this, mMsgDatas);
         mContentPanelLv.setAdapter(mListAdapter);
+        mContentPanelLv.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 
         mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override

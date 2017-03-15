@@ -53,6 +53,7 @@ public class ClientActivity extends AppCompatActivity
         mSocketClient = new MySocketClient();
         mListAdapter = new MsgListAdapter(this, mMsgDatas);
         mContentPanelLv.setAdapter(mListAdapter);
+        mContentPanelLv.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 
         mConnectBtn.setOnClickListener(new View.OnClickListener() {
             @Override

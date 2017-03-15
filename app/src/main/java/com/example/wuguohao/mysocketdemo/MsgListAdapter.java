@@ -2,6 +2,7 @@ package com.example.wuguohao.mysocketdemo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.widget.Space;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,8 @@ public class MsgListAdapter extends BaseAdapter
             view = inflater.inflate(R.layout.item_msg, null);
 
             holder.textView = (TextView) view.findViewById(R.id.msg_item);
+            holder.right = (Space) view.findViewById(R.id.right_space);
+            holder.left = (Space) view.findViewById(R.id.left_space);
             view.setTag(holder);
         }
         else
@@ -64,13 +67,19 @@ public class MsgListAdapter extends BaseAdapter
         holder.textView.setText(mb.getMsg());
         if (mb.getSenderType() == MessageBean.SEND_MSG_TYPE) {
             holder.textView.setGravity(Gravity.RIGHT);
+            holder.right.setVisibility(View.GONE);
+            holder.left.setVisibility(View.VISIBLE);
         } else if (mb.getSenderType() == MessageBean.RECEIVE_MSG_TYPE) {
             holder.textView.setGravity(Gravity.LEFT);
+            holder.right.setVisibility(View.VISIBLE);
+            holder.left.setVisibility(View.GONE);
         }
         return view;
     }
 
     class ViewHolder {
         TextView textView;
+        Space left;
+        Space right;
     }
 }
